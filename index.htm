@@ -63,7 +63,7 @@
 			gui.add(obj,'r',0,10).name('particle radius');
 			gui.addColor(obj,'pcolor').name('particle color');
 			gui.addColor(obj,'bcolor').name('background');
-			gui.add(obj,'bounce',-1,0).step(.1);
+			gui.add(obj,'bounce',-1,0).step(.1).name('gravity');
 
 			function Particle() {
 				this.x = Math.random() * w;
