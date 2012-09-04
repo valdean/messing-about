@@ -37,7 +37,7 @@ var obj = {
 	bounce: -0.4
 };
 
-gui.add(obj,'pcount',100,5000).name('particle count');
+// gui.add(obj,'pcount',100,5000).name('particle count');
 gui.add(obj,'r',0,10).name('particle radius');
 gui.addColor(obj,'pcolor').name('particle color');
 gui.addColor(obj,'bcolor').name('background');
