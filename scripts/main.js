@@ -34,14 +34,14 @@ var obj = {
 	pcount: 1000,
 	pcolor: "rgba(255, 255, 0, .8)",
 	bcolor: "rgba(0, 0, 0, 1)",
-	bounce: -0.4
+	bounce: 0.6
 };
 
 // gui.add(obj,'pcount',100,5000).name('particle count');
 gui.add(obj,'r',0,10).name('particle radius');
 gui.addColor(obj,'pcolor').name('particle color');
 gui.addColor(obj,'bcolor').name('background');
-gui.add(obj,'bounce',-1,0,.1).name('gravity');
+gui.add(obj,'bounce',0,1,.1).name('gravity');
 
 var particles = [],
 		count = obj.pcount,
@@ -94,19 +94,19 @@ function draw() {
 		//Detect collision with floor
 		if(p.y > h) {
 			p.y = h - p.radius;
-			p.vy *= obj.bounce;
+			p.vy *= -1 + obj.bounce;
 			p.hits++;
 		}
 		
 		//Detect collision with walls
 		if(p.x > w) {
 			p.x = w - p.radius;
-			p.vx *= obj.bounce;
+			p.vx *= -1 + obj.bounce;
 		}
 		
 		else if(p.x < 0) {
 			p.x = 0 + p.radius;
-			p.vx *= obj.bounce;
+			p.vx *= -1 + obj.bounce;
 		}
 		
 		//Regenerate particles
