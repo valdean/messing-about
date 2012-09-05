@@ -1,5 +1,33 @@
 var gui = new dat.GUI();
 
+
+
+var x;
+var y;
+var old_x;
+var old_y;
+// added below
+var anglerad;
+var anglerad;
+// added above
+function get_coords(event)
+{
+	x=event.clientX;
+	y=event.clientY;
+	yd = (y - old_y);
+	this.xd = (x - old_x);
+	dxy = (yd/xd);
+	anglerad = Math.atan(dxy);
+	angledeg = (180/Math.PI) * anglerad;
+	//document.getElementById("mytext").value = anglerad + " :: " + angledeg;
+	old_x = x;
+	old_y = y;
+	console.log(xd);
+
+}
+
+
+
 // Apart from the dat.GUI additions, this code comes from Kushagra Agarwal's "Particles Gravity Effect" http://cssdeck.com/labs/particles-gravity-effect
 
 var canvas;
@@ -34,18 +62,14 @@ var obj = {
 	pcount: 1000,
 	pcolor: "rgba(255, 255, 0, .8)",
 	bcolor: "rgba(0, 0, 0, 1)",
-	bounce: -0.4
+	bounce: 0.6
 };
 
-// gui.add(obj,'pcount',100,5000).name('particle count');
+gui.add(obj,'pcount',100,5000).name('particle count');
 gui.add(obj,'r',0,10).name('particle radius');
 gui.addColor(obj,'pcolor').name('particle color');
 gui.addColor(obj,'bcolor').name('background');
-gui.add(obj,'bounce',-1,0,.1).name('gravity');
-
-var particles = [],
-		count = obj.pcount,
-		acc = 0.2;
+gui.add(obj,'bounce',0,1,.1).name('gravity');
 
 function Particle() {
 	this.x = Math.random() * w;
@@ -66,6 +90,10 @@ function Particle() {
 		ctx.fill();
 	};
 }
+
+var particles = [],
+		count = obj.pcount,
+		acc = 0.2;
 
 //Fill the insects into flock
 for(var i = 0; i < obj.pcount; i++) {
@@ -90,23 +118,24 @@ function draw() {
 		
 		//Acceleration in acrion
 		p.vy += acc;
+		p.vx = this.xd;
 		
 		//Detect collision with floor
 		if(p.y > h) {
 			p.y = h - p.radius;
-			p.vy *= obj.bounce;
+			p.vy *= -1 + obj.bounce;
 			p.hits++;
 		}
 		
 		//Detect collision with walls
 		if(p.x > w) {
 			p.x = w - p.radius;
-			p.vx *= obj.bounce;
+			p.vx *= -1 + obj.bounce;
 		}
 		
 		else if(p.x < 0) {
 			p.x = 0 + p.radius;
-			p.vx *= obj.bounce;
+			p.vx *= -1 + obj.bounce;
 		}
 		
 		//Regenerate particles
