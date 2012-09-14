@@ -1,0 +1,36 @@
+<html>
+<head>
+<script type="text/javascript">
+var x;
+var y;
+var old_x;
+var old_y;
+// added below
+var anglerad;
+var anglerad;
+// added above
+function get_coords(event)
+{
+	x=event.clientX;
+	y=event.clientY;
+	yd = (y - old_y);
+	xd = (x - old_x);
+	dxy = (yd/xd);
+	anglerad = Math.atan(dxy);
+	angledeg = (180/Math.PI) * anglerad;
+	document.getElementById("mytext").value = anglerad + " :: " + angledeg;
+	old_x = x;
+	old_y = y;
+
+}
+</script>
+</head>
+
+<body onmousemove="get_coords(event)">
+
+<p>Move the mouse around</p>
+
+<input type="text" id="mytext" style="width:30em;"/>
+
+</body>
+</html>

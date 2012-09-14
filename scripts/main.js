@@ -25,27 +25,30 @@ window.requestAnimFrame = (function(){
 		  };
 })();
 
-
 var w = window.innerWidth,
 h = window.innerHeight;
 
 var obj = {
-	r: 0.75,
-	pcount: 1000,
+	r: 0.5,
+	pcount: 200,
 	pcolor: "rgba(255, 255, 0, .8)",
 	bcolor: "rgba(0, 0, 0, 1)",
-	bounce: 0.6
+	bounce: 0.6,
+	speed: 0.2
 };
 
-// gui.add(obj,'pcount',100,5000).name('particle count');
+var particles = [];
+
+for(var i = 0; i < obj.pcount; i++) {
+	particles[i] = new Particle();
+}
+
+var particlecount = gui.add(obj,'pcount',0,3000,1).name('particle count');
 gui.add(obj,'r',0,10).name('particle radius');
+gui.add(obj,'speed',-0.1,1,.1).name('gravity');
+gui.add(obj,'bounce',0,1,.1).name('weight');
 gui.addColor(obj,'pcolor').name('particle color');
 gui.addColor(obj,'bcolor').name('background');
-gui.add(obj,'bounce',0,1,.1).name('gravity');
-
-var particles = [],
-		count = obj.pcount,
-		acc = 0.2;
 
 function Particle() {
 	this.x = Math.random() * w;
@@ -67,11 +70,6 @@ function Particle() {
 	};
 }
 
-//Fill the insects into flock
-for(var i = 0; i < obj.pcount; i++) {
-	particles.push(new Particle());
-}
-
 function paintCanvas() {
 	ctx.fillStyle = obj.bcolor;
 	ctx.fillRect(0, 0, w, h);
@@ -79,6 +77,19 @@ function paintCanvas() {
 
 function draw() {
 	paintCanvas();
+
+	particlecount.onChange(function(n) {
+		var length = particles.length;
+		if (n > length) {
+			for(var i = length; i < n; i++) {
+				particles[i] = new Particle();
+			}
+		} else {
+			for (var i = 0; i < length - n; i++) {
+				particles.pop();
+			}
+		}
+	});
 	
 	//Draw particles
 	for(var j = 0; j < particles.length; j++) {
@@ -89,7 +100,7 @@ function draw() {
 		p.x += p.vx;
 		
 		//Acceleration in acrion
-		p.vy += acc;
+		p.vy += obj.speed;
 		
 		//Detect collision with floor
 		if(p.y > h) {
